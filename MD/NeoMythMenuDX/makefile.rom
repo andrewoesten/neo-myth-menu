@@ -11,7 +11,7 @@ BINTOC = $(TOOLDIR)/bin2c
 LDSCRIPTSDIR = $(ROOTDIR)/ldscripts
 LINKFLAGS = -T$(LDSCRIPTSDIR)/md.ld -Wl,-Map=output.map -nostdlib
 
-LIBPATH = -L$(ROOTDIR)/m68k-elf/lib -L$(ROOTDIR)/m68k-elf/lib/gcc/m68k-elf/4.6.2 -L$(ROOTDIR)/m68k-elf/m68k-elf/lib
+LIBPATH = -L$(ROOTDIR)/m68k-elf/lib/gcc/m68k-elf/4.8.0/m68000 -L$(ROOTDIR)/m68k-elf/lib 
 INCPATH = -I$(CURDIR) -I$(ROOTDIR)/m68k-elf/include -I$(ROOTDIR)/m68k-elf/m68k-elf/include
 OPTION =
 CCFLAGS = $(OPTION) -m68000 -Wall -O2 -c -fomit-frame-pointer -fshort-wchar -fno-strict-aliasing

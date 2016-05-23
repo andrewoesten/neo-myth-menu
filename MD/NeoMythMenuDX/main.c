@@ -179,9 +179,9 @@ static short int gSRAMgrServiceStatus = SMGR_STATUS_NULL;
 static short int gSRAMgrServiceMode = 0x0000;
 
 #ifndef RUN_IN_PSRAM
-static const char gAppTitle[] = "Neo Super 32X/MD/SMS Menu v3.0";
+static const char gAppTitle[] = "Neo Titan 32X/MD/SMS Menu v3.0";
 #else
-static const char gAppTitle[] = "NEO Super 32X/MD/SMS Menu v3.0";
+static const char gAppTitle[] = "NEO Titan 32X/MD/SMS Menu v3.0";
 #endif
 
 #define MB (0x20000)
@@ -937,6 +937,13 @@ void get_menu_flash(void)
                 break;
         gSelections[gMaxEntry].name[ix] = 0;
 
+        // check for auto-start extended menu
+        if (!utility_memcmp(p->meName, "AUTOSTART", 9))
+        {
+            gCurEntry = gMaxEntry;
+            run_rom(0x0000); // never returns
+        }
+		
         // check for auto-boot extended menu
         if ((gSelections[gMaxEntry].run == 7) && !utility_memcmp(p->meName, "MDEBIOS", 7))
         {
@@ -1755,7 +1762,7 @@ void update_display(void)
             else if (gCart.GameDev == 0x880D)
                 utility_strcat(temp, " / 512Kb Type C ");
             else
-                sprintf(temp[strlen(temp)], " / %04X:%04X ", gCart.GameMan, gCart.GameDev);
+                sprintf(&temp[strlen(temp)], " / %04X:%04X ", gCart.GameMan, gCart.GameDev);
         }
         else if (IS_NEO2SD)
             utility_strcat(temp, " / Neo2-SD ");
@@ -1764,7 +1771,7 @@ void update_display(void)
         else if (IS_NEO3)
             utility_strcat(temp, " / Neo3-SD ");
         else
-            sprintf(temp[strlen(temp)], " / %04X:%04X ", gCart.GameMan, gCart.GameDev);
+            sprintf(&temp[strlen(temp)], " / %04X:%04X ", gCart.GameMan, gCart.GameDev);
 #else
         sprintf(temp, "%02X%02X%02X%02X%02X:%02X:%02X:V%d:%04X/%04X:%04X/%04X",
                 gCart.Magic[0], gCart.Magic[1], gCart.Magic[2], gCart.Magic[3], gCart.Magic[4], gCart.Neo2,
